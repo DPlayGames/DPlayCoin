@@ -2,9 +2,10 @@ pragma solidity ^0.5.1;
 
 import "./Standard/ERC20.sol";
 import "./Standard/ERC165.sol";
+import "./Util/NetworkChecker.sol";
 import "./Util/SafeMath.sol";
 
-contract DPlayCoin is ERC20, ERC165 {
+contract DPlayCoin is ERC20, ERC165, NetworkChecker {
 	using SafeMath for uint256;
 	
 	// 토큰 정보
@@ -122,5 +123,12 @@ contract DPlayCoin is ERC20, ERC165 {
 	// DC 파워를 반환합니다.
 	function getPower(address user) external view returns (uint256 power) {
 		return balances[user];
+	}
+	
+	// 테스트용 DC를 생성합니다.
+	function createDCForTest(uint256 amount) external {
+		if (network != Network.Mainnet) {
+			balances[msg.sender] += amount;
+		}
 	}
 }
