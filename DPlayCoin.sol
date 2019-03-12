@@ -6,19 +6,25 @@ import "./Util/NetworkChecker.sol";
 import "./Util/SafeMath.sol";
 
 contract DPlayCoin is ERC20, ERC165, NetworkChecker {
-	using SafeMath for uint256;
+	using SafeMath for uint;
 	
 	// Token information
 	// 토큰 정보 
 	string constant public NAME = "DPlay Coin";
 	string constant public SYMBOL = "DC";
 	uint8 constant public DECIMALS = 18;
-	uint256 constant public TOTAL_SUPPLY = 10000000000 * (10 ** uint256(DECIMALS));
+	uint constant public TOTAL_SUPPLY = 10000000000 * (10 ** uint(DECIMALS));
 	
 	address public author;
 	
-	mapping(address => uint256) public balances;
-	mapping(address => mapping(address => uint256)) public allowed;
+	mapping(address => uint) public balances;
+	mapping(address => mapping(address => uint)) public allowed;
+	
+	// DPlay 교역소 주소
+	address public dplayTradingPost;
+	
+	// DPlay 스토어 주소
+	address public dplayStore;
 	
 	constructor() public {
 		
@@ -57,22 +63,22 @@ contract DPlayCoin is ERC20, ERC165, NetworkChecker {
 	
 	//ERC20: Returns the total number of tokens.
 	//ERC20: 전체 토큰 수 반환
-	function totalSupply() external view returns (uint256) {
+	function totalSupply() external view returns (uint) {
 		return TOTAL_SUPPLY;
 	}
 	
 	//ERC20: Returns the number of tokens of a specific user.
 	//ERC20: 특정 유저의 토큰 수를 반환합니다.
-	function balanceOf(address user) external view returns (uint256 balance) {
+	function balanceOf(address user) external view returns (uint balance) {
 		return balances[user];
 	}
 	
 	//ERC20: Transmits tokens to a specific user.
 	//ERC20: 특정 유저에게 토큰을 전송합니다.
-	function transfer(address to, uint256 amount) external payable returns (bool success) {
+	function transfer(address to, uint amount) external payable returns (bool success) {
 		
-		// 주소 오용 차단
 		// Blocks misuse of an address.
+		// 주소 오용 차단
 		require(checkAddressMisused(to) != true);
 		
 		require(amount <= balances[msg.sender]);
@@ -87,7 +93,7 @@ contract DPlayCoin is ERC20, ERC165, NetworkChecker {
 	
 	//ERC20: Grants rights to send the amount of tokens to the spender.
 	//ERC20: spender에 amount만큼의 토큰을 보낼 권리를 부여합니다.
-	function approve(address spender, uint256 amount) external payable returns (bool success) {
+	function approve(address spender, uint amount) external payable returns (bool success) {
 		
 		allowed[msg.sender][spender] = amount;
 		
@@ -98,19 +104,27 @@ contract DPlayCoin is ERC20, ERC165, NetworkChecker {
 	
 	//ERC20: Returns the quantity of tokens to the spender
 	//ERC20: spender가 인출하도록 허락 받은 토큰의 양을 반환합니다.
-	function allowance(address user, address spender) external view returns (uint256 remaining) {
+	function allowance(address user, address spender) external view returns (uint remaining) {
 		return allowed[user][spender];
 	}
 	
 	//ERC20: The allowed spender sends the "amount" of tokens from the "from" to the "to".
 	//ERC20: 허락된 spender가 from으로부터 amount만큼의 토큰을 to에게 전송합니다.
-	function transferFrom(address from, address to, uint256 amount) external payable returns (bool success) {
+	function transferFrom(address from, address to, uint amount) external payable returns (bool success) {
 		
+		// Blocks misuse of an address.
 		// 주소 오용 차단
 		require(checkAddressMisused(to) != true);
 		
 		require(amount <= balances[from]);
-		require(amount <= allowed[from][msg.sender]);
+		
+		require(
+			// DPlay 교역소와 스토어는 허락이 불필요합니다.
+			msg.sender == dplayTradingPost ||
+			msg.sender == dplayStore ||
+			
+			amount <= allowed[from][msg.sender]
+		);
 		
 		balances[from] = balances[from].sub(amount);
 		balances[to] = balances[to].add(amount);
@@ -135,14 +149,16 @@ contract DPlayCoin is ERC20, ERC165, NetworkChecker {
 	
 	// Returns the DC power.
 	// DC 파워를 반환합니다.
-	function getPower(address user) external view returns (uint256 power) {
+	function getPower(address user) external view returns (uint power) {
 		return balances[user];
 	}
 	
 	// Creates DCs for testing.
 	// 테스트용 DC를 생성합니다.
-	function createDCForTest(uint256 amount) external {
-		if (network != Network.Mainnet) {
+	function createDCForTest(uint amount) external {
+		if (network == Network.Mainnet) {
+			revert();
+		} else {
 			balances[msg.sender] += amount;
 		}
 	}
