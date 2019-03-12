@@ -1,6 +1,7 @@
 pragma solidity ^0.5.1;
 
-// This library is for preventing overflow problems while calculating numbers. 숫자 계산 시 오버플로우 문제를 방지하기 위한 라이브러리
+// 숫자 계산 시 오버플로우 문제를 방지하기 위한 라이브러리
+// This library is for preventing overflow problems while calculating numbers.
 library SafeMath {
 	
 	function add(uint a, uint b) pure internal returns (uint c) {
