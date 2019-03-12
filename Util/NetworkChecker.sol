@@ -17,7 +17,8 @@ contract NetworkChecker {
 	
 	Network public network;
 	
-	// Checks if the given address is a smart contract. 주어진 주소가 스마트 계약인지 확인합니다.
+	// 주어진 주소가 스마트 계약인지 확인합니다.
+	// Checks if the given address is a smart contract. 
 	function checkIsSmartContract(address addr) private view returns (bool) {
 		uint32 size;
 		assembly { size := extcodesize(addr) }
@@ -26,7 +27,8 @@ contract NetworkChecker {
 	
 	constructor() public {
 		
-		// Checks if the contract is in the main network. Main 네트워크인지 확인합니다.
+		// Main 네트워크인지 확인합니다.
+		// Checks if the contract runs on the main network. 
 		if (checkIsSmartContract(MAINNET_MILESTONE_ADDRESS) == true) {
 			(bool success, ) = MAINNET_MILESTONE_ADDRESS.call(abi.encodeWithSignature("helloMainnet()"));
 			if (success == true) {
@@ -35,7 +37,8 @@ contract NetworkChecker {
 			}
 		}
 		
-		// Checks if the contract is in the Kovan network. Kovan 네트워크인지 확인합니다.
+		// Kovan 네트워크인지 확인합니다.
+		// Checks if the contract is in the Kovan network. 
 		if (checkIsSmartContract(KOVAN_MILESTONE_ADDRESS) == true) {
 			(bool success, ) = KOVAN_MILESTONE_ADDRESS.call(abi.encodeWithSignature("helloKovan()"));
 			if (success == true) {
@@ -44,7 +47,8 @@ contract NetworkChecker {
 			}
 		}
 		
-		// Checks if the contract is in the Ropsten network. Ropsten 네트워크인지 확인합니다.
+		// Ropsten 네트워크인지 확인합니다.
+		// Checks if the contract is in the Ropsten network. 
 		if (checkIsSmartContract(ROPSTEN_MILESTONE_ADDRESS) == true) {
 			(bool success, ) = ROPSTEN_MILESTONE_ADDRESS.call(abi.encodeWithSignature("helloRopsten()"));
 			if (success == true) {
@@ -53,7 +57,8 @@ contract NetworkChecker {
 			}
 		}
 		
-		// Checks if the contract is in the Rinkeby network. Rinkeby 네트워크인지 확인합니다.
+		// Rinkeby 네트워크인지 확인합니다.
+		// Checks if the contract is in the Rinkeby network. 
 		if (checkIsSmartContract(RINKEBY_MILESTONE_ADDRESS) == true) {
 			(bool success, ) = RINKEBY_MILESTONE_ADDRESS.call(abi.encodeWithSignature("helloRinkeby()"));
 			if (success == true) {
@@ -62,7 +67,8 @@ contract NetworkChecker {
 			}
 		}
 		
-		// The network is unknown. 알 수 없는 네트워크
+		// 알 수 없는 네트워크
+		// The network is unknown. 
 		network = Network.Unknown;
 	}
 }
