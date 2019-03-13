@@ -1,11 +1,12 @@
 pragma solidity ^0.5.1;
 
+import "./DPlayCoinInterface.sol";
 import "./Standard/ERC20.sol";
 import "./Standard/ERC165.sol";
 import "./Util/NetworkChecker.sol";
 import "./Util/SafeMath.sol";
 
-contract DPlayCoin is ERC20, ERC165, NetworkChecker {
+contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	using SafeMath for uint;
 	
 	// Token information
