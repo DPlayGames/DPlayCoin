@@ -36,6 +36,24 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 		emit Transfer(address(0x0), author, TOTAL_SUPPLY);
 	}
 	
+	// DPlay 교역소 주소를 지정합니다. (단 한번만 가능합니다.)
+	function setDPlayTradingPostOnce(address addr) external {
+		
+		// 비어있는 주소인 경우에만
+		require(dplayTradingPost == address(0));
+		
+		dplayTradingPost = addr;
+	}
+	
+	// DPlay 스토어 주소를 지정합니다. (단 한번만 가능합니다.)
+	function setDPlayStoreOnce(address addr) external {
+		
+		// 비어있는 주소인 경우에만
+		require(dplayStore == address(0));
+		
+		dplayStore = addr;
+	}
+	
 	// Checks if the address is misued.
 	// 주소를 잘못 사용하는 것인지 체크 
 	function checkAddressMisused(address target) internal view returns (bool) {
