@@ -1,4 +1,4 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.9;
 
 import "./DPlayCoinInterface.sol";
 import "./Standard/ERC20.sol";
@@ -20,6 +20,8 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	
 	mapping(address => uint) public balances;
 	mapping(address => mapping(address => uint)) public allowed;
+	
+	// 아래 두 주소는 신뢰하는 스마트 계약의 주소로 approve할 필요가 없습니다.
 	
 	// DPlay 교역소 주소
 	address public dplayTradingPost;
