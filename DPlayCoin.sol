@@ -11,15 +11,13 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	
 	// Token information
 	// 토큰 정보 
-	string constant public NAME = "DPlay Coin";
-	string constant public SYMBOL = "DC";
-	uint8 constant public DECIMALS = 18;
-	uint constant public TOTAL_SUPPLY = 10000000000 * (10 ** uint(DECIMALS));
+	string constant private NAME = "DPlay Coin";
+	string constant private SYMBOL = "DC";
+	uint8 constant private DECIMALS = 18;
+	uint constant private TOTAL_SUPPLY = 10000000000 * (10 ** uint(DECIMALS));
 	
-	address public author;
-	
-	mapping(address => uint) public balances;
-	mapping(address => mapping(address => uint)) public allowed;
+	mapping(address => uint) private balances;
+	mapping(address => mapping(address => uint)) private allowed;
 	
 	// 아래 두 주소는 신뢰하는 스마트 계약의 주소로 허락받을 필요가 없습니다.
 	
@@ -31,11 +29,9 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	
 	constructor() public {
 		
-		author = msg.sender;
+		balances[msg.sender] = TOTAL_SUPPLY;
 		
-		balances[author] = TOTAL_SUPPLY;
-		
-		emit Transfer(address(0x0), author, TOTAL_SUPPLY);
+		emit Transfer(address(0x0), msg.sender, TOTAL_SUPPLY);
 	}
 	
 	// DPlay 교역소 주소를 지정합니다. (단 한번만 가능합니다.)
