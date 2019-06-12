@@ -122,6 +122,14 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	//ERC20: Returns the quantity of tokens to the spender
 	//ERC20: spender가 인출하도록 허락 받은 토큰의 양을 반환합니다.
 	function allowance(address user, address spender) external view returns (uint remaining) {
+		
+		if (
+		// DPlay 교역소와 스토어는 모든 토큰을 전송할 수 있습니다.
+		spender == dplayTradingPost ||
+		spender == dplayStore) {
+			return balances[user];
+		}
+		
 		return allowed[user][spender];
 	}
 	
