@@ -30,7 +30,7 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	// DPlay 교역소 주소
 	address public dplayTradingPost;
 	
-	constructor() public {
+	constructor() NetworkChecker() public {
 		
 		balances[msg.sender] = TOTAL_SUPPLY;
 		
