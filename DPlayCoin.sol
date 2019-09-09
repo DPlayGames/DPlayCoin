@@ -22,19 +22,29 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	// The two addresses below are the addresses of the trusted smart contract, and don't need to be allowed.
 	// 아래 두 주소는 신뢰하는 스마트 계약의 주소로 허락받을 필요가 없습니다.
 	
-	// The address of DPlay trading post
-	// DPlay 교역소 주소
-	address public dplayTradingPost;
-	
 	// The address of DPlay store
 	// DPlay 스토어 주소	
 	address public dplayStore;
+	
+	// The address of DPlay trading post
+	// DPlay 교역소 주소
+	address public dplayTradingPost;
 	
 	constructor() public {
 		
 		balances[msg.sender] = TOTAL_SUPPLY;
 		
 		emit Transfer(address(0x0), msg.sender, TOTAL_SUPPLY);
+	}
+	
+	// Sets the address of DPlay store. (Done only once.)
+	// DPlay 스토어 주소를 지정합니다. (단 한번만 가능합니다.)
+	function setDPlayStoreOnce(address addr) external {
+		
+		// 비어있는 주소인 경우에만
+		require(dplayStore == address(0));
+		
+		dplayStore = addr;
 	}
 	
 	// Sets the address of DPlay trading post. (Done only once.)
@@ -46,16 +56,6 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 		require(dplayTradingPost == address(0));
 		
 		dplayTradingPost = addr;
-	}
-	
-	// Sets the address of DPlay store. (Done only once.)
-	// DPlay 스토어 주소를 지정합니다. (단 한번만 가능합니다.)
-	function setDPlayStoreOnce(address addr) external {
-		
-		// 비어있는 주소인 경우에만
-		require(dplayStore == address(0));
-		
-		dplayStore = addr;
 	}
 	
 	// Checks if the address is misued.
@@ -130,9 +130,9 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	function allowance(address user, address spender) external view returns (uint remaining) {
 		
 		if (
-		// DPlay 교역소와 스토어는 모든 토큰을 전송할 수 있습니다.
-		spender == dplayTradingPost ||
-		spender == dplayStore) {
+		// DPlay 스토어와 교역소는 모든 토큰을 전송할 수 있습니다.
+		spender == dplayStore ||
+		spender == dplayTradingPost) {
 			return balances[user];
 		}
 		
@@ -150,9 +150,9 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 		require(amount <= balances[from]);
 		
 		require(
-			// DPlay 교역소와 스토어는 허락이 불필요합니다.
-			msg.sender == dplayTradingPost ||
+			// DPlay 스토어와 교역소는 모든 토큰을 전송할 수 있습니다.
 			msg.sender == dplayStore ||
+			msg.sender == dplayTradingPost ||
 			
 			amount <= allowed[from][msg.sender]
 		);
