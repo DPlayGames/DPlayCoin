@@ -7,7 +7,7 @@ DCPower
 DPlay Coin은 ERC20 표준 토큰이나, DPlay 스토어 및 DPlay 교역소에서는 `approve`가 불필요합니다.
 
 ## 계약 주소
-- Kovan: 0xD3D2a9C0dA386D0d37573f7D06471DB81cfb3096
+- Kovan: 0xd1E609c2Cf998e9E87FfC73A31220706df9d7633
 
 ## 테스트 여부
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-no-red.svg) `event Transfer(address indexed _from, address indexed _to, uint _value)`
