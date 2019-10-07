@@ -4,7 +4,7 @@ DPlay Coin은 DPlay 플랫폼에서 사용되는 화폐입니다.
 DPlay Coin은 ERC20 표준 토큰이나, DPlay 스토어 및 DPlay 교역소에서는 `approve`가 불필요합니다.
 
 ## 계약 주소
-- Kovan: 0xfFF1528013478fc286ABBBE8071D5404b082Be5D
+- Kovan: 0xbfd498C5831a7C2572145900c1a8BeFadf10f820
 
 ## 테스트 여부
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `event Transfer(address indexed _from, address indexed _to, uint _value)`
