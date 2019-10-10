@@ -10,7 +10,7 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	using SafeMath for uint;
 	
 	// Token information
-	// 토큰 정보 
+	// 토큰 정보
 	string constant private NAME = "DPlay Coin";
 	string constant private SYMBOL = "DC";
 	uint8 constant private DECIMALS = 18;
@@ -23,7 +23,7 @@ contract DPlayCoin is DPlayCoinInterface, ERC20, ERC165, NetworkChecker {
 	// 아래 두 주소는 신뢰하는 스마트 계약의 주소로 허락받을 필요가 없습니다.
 	
 	// The address of DPlay store
-	// DPlay 스토어 주소	
+	// DPlay 스토어 주소
 	address public dplayStore;
 	
 	// The address of DPlay trading post
